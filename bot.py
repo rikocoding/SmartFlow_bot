@@ -10,7 +10,7 @@ bot_token = os.getenv('BOT_TOKEN')
 
 # Variabel global
 setpoint = 1000  # Default setpoint volume air dalam mL (1000 mL = 1 Liter)
-solenoid_status = "Tertutup ❌"  # Default kondisi solenoid tertutup
+solenoid_status = "Tertutup "  # Default kondisi solenoid tertutup
 WAITING_FOR_SETPOINT = 1  # Status untuk menunggu input angka
 
 # Fungsi untuk mendapatkan data debit air dari sensor
@@ -29,11 +29,11 @@ def get_waktu_pengukuran():
 def kontrol_solenoid(status: str):
     global solenoid_status
     if status == "open":
-        solenoid_status = "Terbuka ✅"
-        return "🔓 Solenoid valve dibuka ✅"
+        solenoid_status = "Terbuka "
+        return " Solenoid valve dibuka "
     elif status == "close":
-        solenoid_status = "Tertutup ❌"
-        return "🔒 Solenoid valve ditutup ❌"
+        solenoid_status = "Tertutup "
+        return " Solenoid valve ditutup "
     return "Perintah tidak dikenali"
 
 # Fungsi untuk menampilkan keyboard menu
@@ -60,12 +60,12 @@ async def data(update: Update, context: CallbackContext):
     waktu_pengukuran = get_waktu_pengukuran()
 
     pesan = (
-        f"📊 **Data Pengukuran Air** 📊\n"
-        f"🕒 Waktu Pengukuran: {waktu_pengukuran}\n"
-        f"💧 Debit Air: {debit_air} mL/min\n"
-        f"📦 Volume Air: {volume_air} mL\n"
-        f"🎯 Setpoint: {setpoint} mL\n"
-        f"🔘 Kondisi Solenoid: {solenoid_status}"
+        f" **Data Pengukuran Air** \n"
+        f" Waktu Pengukuran: {waktu_pengukuran}\n"
+        f" Debit Air: {debit_air} mL/min\n"
+        f" Volume Air: {volume_air} mL\n"
+        f" Setpoint: {setpoint} mL\n"
+        f" Kondisi Solenoid: {solenoid_status}"
     )
     await update.message.reply_text(pesan)
 
@@ -82,15 +82,15 @@ async def save_setpoint(update: Update, context: CallbackContext):
     global setpoint
     try:
         setpoint = int(update.message.text)  # Coba konversi ke angka
-        await update.message.reply_text(f"✅ Setpoint diperbarui: {setpoint} mL")
+        await update.message.reply_text(f" Setpoint diperbarui: {setpoint} mL")
         return ConversationHandler.END  # Selesai
     except ValueError:
-        await update.message.reply_text("⚠️ Masukkan angka yang valid! Coba lagi.")
+        await update.message.reply_text(" Masukkan angka yang valid! Coba lagi.")
         return WAITING_FOR_SETPOINT  # Tetap dalam mode menunggu angka
 
 # Fungsi untuk membatalkan setpoint
 async def cancel_setpoint(update: Update, context: CallbackContext):
-    await update.message.reply_text("❌ Pengaturan setpoint dibatalkan.")
+    await update.message.reply_text(" Pengaturan setpoint dibatalkan.")
     return ConversationHandler.END  # Keluar dari mode input angka
 
 # Fungsi untuk membuka solenoid valve
